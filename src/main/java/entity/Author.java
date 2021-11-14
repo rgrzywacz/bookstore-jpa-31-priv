@@ -4,15 +4,16 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+
 
 @Getter
 @Setter
 @ToString
 @Entity
 @Table(name = "authors")
+@NoArgsConstructor
+@AllArgsConstructor
 @SuppressWarnings("all")
 public class Author extends BasicEntity {
     @Column(name="first_name")
@@ -26,11 +27,22 @@ public class Author extends BasicEntity {
     @Column(name="description")
     private String description;
 
-    @Column(name="sex", columnDefinition="ENUM('M','S')")
+    @Column(name="sex", columnDefinition="ENUM('M','F')")
     @Enumerated(EnumType.STRING)
     private Sex sex;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "author" )
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author" )
     private List<AuthorBook> authorBook;
 
+
+    public Author(String firstName) {
+        this.firstName = firstName;
+    }
+
+    @Override
+    public String toString() {
+        return "Author{" + "firstName='" + firstName + '\'' + ", secondName='" + secondName + '\'' +
+               ", lastName='" + lastName + '\'' + ", dateOfBirth=" + dateOfBirth +
+               ", description='" + description + '\'' + ", sex=" + sex + '}';
+    }
 }
